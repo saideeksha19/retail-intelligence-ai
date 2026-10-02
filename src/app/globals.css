@@ -1,26 +1,275 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   RETAIL INTELLIGENCE — CRISP EDITORIAL VISUAL SYSTEM
+   Warm ivory base · crisp charcoal ink · strategic bold accents
+   ============================================================ */
+
+@theme {
+  --color-ivory: #faf8f3;
+  --color-cream: #f2eee6;
+  --color-paper: #ffffff;
+  --color-ink: #202124;
+  --color-coral: #ff5c5c;
+  --color-tangerine: #ff8a3d;
+  --color-gold: #f4c542;
+  --color-teal: #19b7a5;
+  --color-magenta: #d94f9d;
+  --color-line: rgba(32, 33, 36, 0.12);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-display: var(--font-space-grotesk), var(--font-geist-sans), ui-sans-serif, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ---------- Base ---------- */
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(255, 138, 61, 0.25);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Subtle scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ivory);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(32, 33, 36, 0.22);
+  border-radius: 8px;
+  border: 2px solid var(--color-ivory);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(32, 33, 36, 0.4);
+}
+
+/* ---------- Typography helpers ---------- */
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.display-tight {
+  font-family: var(--font-display);
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(32, 33, 36, 0.5);
+}
+
+@media (min-width: 1024px) {
+  .text-outline {
+    -webkit-text-stroke-width: 2px;
+  }
+}
+
+/* ---------- Crisp Surfaces (No Excessive Haze) ---------- */
+
+.glass {
+  background: rgba(250, 248, 243, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(32, 33, 36, 0.12);
+}
+
+.card-editorial {
+  background: #ffffff;
+  border: 1px solid rgba(32, 33, 36, 0.12);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px -8px rgba(32, 33, 36, 0.06);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s,
+    box-shadow 0.4s;
+}
+
+.card-editorial:hover {
+  transform: translateY(-2px);
+  border-color: rgba(32, 33, 36, 0.24);
+  box-shadow: 0 16px 36px -16px rgba(32, 33, 36, 0.12);
+}
+
+.hairline {
+  border-color: rgba(32, 33, 36, 0.12);
+}
+
+/* ---------- Background texture layers ---------- */
+
+.bg-grid-faint {
+  background-image:
+    linear-gradient(to right, rgba(32, 33, 36, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(32, 33, 36, 0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Scroll reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal.is-inview {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- Horizontal story ---------- */
+
+.hs-outer {
+  position: relative;
+}
+
+.hs-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.hs-track {
+  display: flex;
+  align-items: stretch;
+  will-change: transform;
+}
+
+.hs-panel {
+  flex-shrink: 0;
+}
+
+/* ---------- Keyframes (GPU-friendly) ---------- */
+
+@keyframes flow-line {
+  0% {
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.anim-flow-line {
+  stroke-dasharray: 6 6;
+  animation: flow-line 2s linear infinite;
+}
+
+.anim-pulse-dot {
+  animation: pulse-dot 3.6s ease-in-out infinite;
+}
+
+.anim-loading-bar {
+  animation: loading-bar 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hs-track {
+    transform: none !important;
+  }
+  .anim-flow-line {
+    animation: none !important;
+  }
+}
+
+/* ---------- Recharts polish ---------- */
+
+.recharts-cartesian-axis-tick text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: rgba(32, 33, 36, 0.65);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.recharts-tooltip-cursor {
+  fill: rgba(32, 33, 36, 0.04);
 }
